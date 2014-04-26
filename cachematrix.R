@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+# Inverts a matrix; assumes matrix is always invertible
+# assume we always get passed a square matrix
+# Because of assumptions no parameter or error checking
 
-## Write a short comment describing this function
+# Must call 'makeCacheMatrix' to set up the matrix
+# before calling 'cacheSolve' to compute the inverse
+
+
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        # initialize and define the functions
+        inv <- NULL                       
+        set <- function(y) {
+                x <<- y
+                inv <<- NULL
+        }
+        get <- function() x
+        setinv <- function(solve) inv <<- solve
+        getinv <- function() inv
+        # set up the list
+        list(set = set, get = get,         
+             setinv = setinv,
+             getinv = getinv)
 }
-
-
-## Write a short comment describing this function
-
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        # get the current value of inv
+        inv <- x$getinv()
+        if(!is.null(inv)) {
+                message("getting cached inverse")
+                return(inv)
+        }
+        # new matrix so compute the inverse and print
+        data <- x$get()
+        inv <- solve(data, ...)
+        x$setinv(inv)
+        inv
 }
